@@ -1,14 +1,13 @@
-let bitprice = require('./bin/bitprice-request');
+let bitprice = require('./bin/bitprice-request')();
 let _        = require('lodash');
 
 let BitCoinPrice = function (callback) {
-	let bp = new BitPriceRequest();
 
 	Promise.all([
-		bp.BitCoinPrice.request();
+		bitprice.BitCoinPrice().request()
 	]).then(
 		function(results) {
-			callback(null, { price: CreateBitPriceResult(results) });
+			callback(null, CreateBitPriceResult(results) );
 		},
 		callback
 	);
@@ -21,25 +20,25 @@ exports.BitCoinPrice  = BitCoinPrice;
 let BitCoinRate = function(callback) {
 
 	Promise.all([
-		bp.BitCoinPrice.request(),
-		bp.BitCoinRate.request()
+		bitprice.BitCoinPrice().request(),
+		bitprice.BitCoinRate().request()
 	]).then(
 		function(results) {
 			let bitPrice = CreateBitPriceResult(results);
 			let bitRates = results[1] || {};
 
-			let results = {};
+			let result = {};
 			_.forEach(bitRates, function(value, key) {
 				if (key.match(/BTC_/i)) {
 					let name = key.replace('BTC_', '');
-					results[name] = {
+					result[name] = {
 						name: name,
-						btc: rate.lowestAsk,
-						jpy: rate.lowestAsk * bitPrice
+						btc: value.lowestAsk,
+						jpy: value.lowestAsk * bitPrice.price
 					};
 				}
 			});
-			callback(null, results);
+			callback(null, result);
 		},
 		callback
 	);
