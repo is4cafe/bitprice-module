@@ -34,6 +34,7 @@ let BitCoinRate = function(callback) {
 				if (key.match(/BTC_/i)) {
 					let name = key.replace('BTC_', '');
 					result[name] = {
+						name: name,
 						btc: value.lowestAsk,
 						jpy: value.lowestAsk * bitPrice.price
 					};
