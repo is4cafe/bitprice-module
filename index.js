@@ -27,12 +27,13 @@ let BitCoinRate = function(callback) {
 			let bitPrice = CreateBitPriceResult(results);
 			let bitRates = results[1] || {};
 
-			let result = {};
+			let result = {
+				'BTC': { btc: 1, jpy: bitPrice.price }
+			};
 			_.forEach(bitRates, function(value, key) {
 				if (key.match(/BTC_/i)) {
 					let name = key.replace('BTC_', '');
 					result[name] = {
-						name: name,
 						btc: value.lowestAsk,
 						jpy: value.lowestAsk * bitPrice.price
 					};
