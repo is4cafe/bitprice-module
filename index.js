@@ -28,7 +28,7 @@ let BitCoinRate = function(callback) {
 			let bitRates = results[1] || {};
 
 			let result = {
-				'BTC': { btc: 1, jpy: bitPrice.price }
+				'BTC': { name: 'BTC', btc: 1, jpy: bitPrice.price }
 			};
 			_.forEach(bitRates, function(value, key) {
 				if (key.match(/BTC_/i)) {
